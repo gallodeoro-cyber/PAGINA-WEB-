@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Slider LED</title>
+
+  <!-- Aplica tema ANTES de pintar para evitar “flash” -->
+  <script>
+    (function(){
+      var t = localStorage.getItem("theme");
+      if (!t) t = "dark";
+      document.documentElement.setAttribute("data-theme", t);
+    })();
+  </script>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="shell">
+    <aside class="side">
+      <div class="brand">
+        <div class="mark">SL</div>
+        <div>
+          <div class="title">Slider LED</div>
+          <div class="sub">Botón físico + Web Sync</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="row">
+          <span class="k">Conexión</span>
+          <span class="v">
+            <span id="dot" class="dot"></span>
+            <span id="dotText">Conectando…</span>
+          </span>
+        </div>
+        <div class="row">
+          <span class="k">Botón físico</span>
+          <span class="v muted">D2 (toggle todo)</span>
+        </div>
+        <div class="row">
+          <span class="k">Pins LEDs</span>
+          <span class="v muted">D3 · D5 · D6 · D9</span>
+        </div>
+
+        <div class="actions">
+          <button id="allOn" class="btn primary">Encender todo</button>
+          <button id="allOff" class="btn danger">Apagar todo</button>
+        </div>
+
+        <div class="toggleRow">
+          <span class="muted">Auto-sync</span>
+          <label class="switch">
+            <input type="checkbox" id="sync" checked>
+            <span class="track"></span>
+          </label>
+        </div>
+
+        <!-- Tema -->
+        <div class="toggleRow" style="margin-top:10px;">
+          <span class="muted">Tema</span>
+          <button id="themeBtn" class="btn">Cambiar</button>
+        </div>
+        <div class="miniText" id="themeText">Modo: …</div>
+
+        <!-- Configuraciones -->
+        <div class="scenes">
+          <div class="scenesTitle">Configuraciones</div>
+          <input id="sceneName" class="sceneInput" placeholder="Nombre (ej. Noche)" />
+          <button id="saveScene" class="btn primary">Guardar configuración</button>
+          <div id="sceneList" class="sceneList"></div>
+        </div>
+
+        <a class="logout" href="/logout">Salir</a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="top">
+        <h1>Panel</h1>
+        <button id="clear" class="btn">Limpiar consola</button>
+      </header>
+
+      <section class="grid">
+        <div class="card" data-led="1">
+          <div class="cardHead">
+            <div class="tag">LED 1 <span class="muted">D3</span></div>
+            <label class="switch">
+              <input type="checkbox" id="sw1">
+              <span class="track"></span>
+            </label>
+          </div>
+          <input id="sl1" type="range" min="0" max="255" value="0">
+          <div class="bottom">
+            <input id="nm1" class="num" type="number" min="0" max="255" value="0">
+            <div class="bar"><span id="bf1"></span></div>
+          </div>
+        </div>
+
+        <div class="card" data-led="2">
+          <div class="cardHead">
+            <div class="tag">LED 2 <span class="muted">D5</span></div>
+            <label class="switch">
+              <input type="checkbox" id="sw2">
+              <span class="track"></span>
+            </label>
+          </div>
+          <input id="sl2" type="range" min="0" max="255" value="0">
+          <div class="bottom">
+            <input id="nm2" class="num" type="number" min="0" max="255" value="0">
+            <div class="bar"><span id="bf2"></span></div>
+          </div>
+        </div>
+
+        <div class="card" data-led="3">
+          <div class="cardHead">
+            <div class="tag">LED 3 <span class="muted">D6</span></div>
+            <label class="switch">
+              <input type="checkbox" id="sw3">
+              <span class="track"></span>
+            </label>
+          </div>
+          <input id="sl3" type="range" min="0" max="255" value="0">
+          <div class="bottom">
+            <input id="nm3" class="num" type="number" min="0" max="255" value="0">
+            <div class="bar"><span id="bf3"></span></div>
+          </div>
+        </div>
+
+        <div class="card" data-led="4">
+          <div class="cardHead">
+            <div class="tag">LED 4 <span class="muted">D9</span></div>
+            <label class="switch">
+              <input type="checkbox" id="sw4">
+              <span class="track"></span>
+            </label>
+          </div>
+          <input id="sl4" type="range" min="0" max="255" value="0">
+          <div class="bottom">
+            <input id="nm4" class="num" type="number" min="0" max="255" value="0">
+            <div class="bar"><span id="bf4"></span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="console">
+        <div class="consoleHead">
+          <span>Consola</span>
+          <span class="muted">Respuestas + cambios por botón físico</span>
+        </div>
+        <pre id="log">Listo.</pre>
+      </section>
+    </main>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
